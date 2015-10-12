@@ -17,6 +17,12 @@
         this.set('n', params.length);
       }
     },
+        // var board1 = Board({n:5});
+        // console.log('hi', board1);
+
+        // var board1 = Board(5);
+        // console.log('hi', board1);
+
 
     rows: function() {
       return _(_.range(this.get('n'))).map(function(rowIndex) {
@@ -78,15 +84,53 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
+    /*
+    createBoard: function(value) {
+      var board1 = ne Board({n : value});
+      console.log('hi I am the new board', board1);
+      
+    }
+    */
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      
+      var add = function(a,b){
+        return a+b;
+      };
+      return _.reduce(this['attributes'][rowIndex], add);
+
     },
+
+
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
-    },
+      var bool = false;
+      var countRow = 0;
+      console.log('let us see if we can see the row being assessed!: ', this['attributes']['1']);
 
+    //if a given row has more than one 1 then make bool true.
+
+      var theBoard = this['attributes'];
+      // for (var key in theBoard) {
+        //if the key is a number
+        // key = parse.JSON(key);
+        // console.log('here, key is: ', key)
+
+        //reg for loop length will be the n
+        for (var i = 0; i < theBoard['n']; i++) {
+          if( this.hasRowConflictAt(i) > 1 ) {//we expect this to return whether the number of pieces in the row is greater than 1
+            countRow++;
+          }
+        }
+      
+
+      if (countRow > 0) {
+        bool = true;
+        //this would give access to rows 0-3
+      }
+      // };
+      return bool;
+    },
 
 
     // COLUMNS - run from top to bottom
@@ -144,5 +188,6 @@
       });
     });
   };
+
 
 }());
