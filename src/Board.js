@@ -179,35 +179,48 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      var theBoard = this['attributes'];
+      var bool = false;
       //start at [0,0] and iterate down the diagonal
-      console.log('index [2,0]', theBoard['2'][0]);
       //the goal is for each board position, assess whether Row+1N, Col+1N is greater than 0
       //if so, change the boolean to true 
-      var sum = 0;
-      var move = 0;
-      var diagonal = 0; //the number of diagonals that have a sum > 1
-      for(var i=0; i<theBoard['n']; i++) {
-        var x = move;
-        var y = (i+move);
-        sum += theBoard[x+''][y]; //we are using string coersion to change from number to string for key
-        while move < n
-        move++;
-      }
-      return false;
+      // var sum = 0;
+      // var sum2 = 0; 
+   
+      return bool;
+      // var bound = theBoard['n']-start; //move traverses the diagonal. For Row+1N, Col+1N, it is N) Affects both axes
+     
+      // for(var i = 0; i < bound; i++) {
+      //   var x = i;
+      //   var y = i;
+      //   sum += theBoard[start+x+''][y]; //we are using string coersion to change from number to string for key
+      //   sum2 += theBoard[y+''][x+start];
+      // }
+      // return sum+sum2;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      // var theBoard = this['attributes'];
+    
       var theBoard = this['attributes'];
+      console.log('the board currently being tested is: ', this);
       //start at [0,0] and iterate down the diagonal
-      console.log('index [2,0]', theBoard['2'][0]);
-
-
-
-
-
-      return false; // fixme
+      //the goal is for each board position, assess whether Row+1N, Col+1N is greater than 0
+      //if so, change the boolean to true 
+      var sum = 0;
+      var sum2 = 0; 
+     
+      for(var i = 0; i < theBoard['n']; i++) {
+        var x = i;
+        var y = i;
+        sum += theBoard[x+''][0+y]; //we are using string coersion to change from number to string for key
+        console.log('sum is: ', sum);
+        sum2 += theBoard[0+y+''][x+2];
+        console.log('sum2 is: ', sum2);
+      }
+      var bool = (sum > 1 || sum2 > 1); //
+      console.log(bool);
+      return bool;
     },
 
 
