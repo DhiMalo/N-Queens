@@ -92,7 +92,6 @@
     }
     */
     hasRowConflictAt: function(rowIndex) {
-      
       var add = function(a,b){
         return a+b;
       };
@@ -100,29 +99,32 @@
 
     },
 
+    arrayBoard: function() { //transforms the given object into a new array - baller function, use if necessary.
+      var anonFunc = function(property, key, collection) {
+        if(Array.isArray(property)) {
+          return property;
+        }
+      };
 
+      var arrayBoard = _.map(this['attributes'], anonFunc);
+      arrayBoard.pop();
+      console.log("array Board", arrayBoard);
+      return arrayBoard;
+
+    },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       var bool = false;
       var countRow = 0;
-      console.log('let us see if we can see the row being assessed!: ', this['attributes']['1']);
 
     //if a given row has more than one 1 then make bool true.
-
       var theBoard = this['attributes'];
-      // for (var key in theBoard) {
-        //if the key is a number
-        // key = parse.JSON(key);
-        // console.log('here, key is: ', key)
-
-        //reg for loop length will be the n
-        for (var i = 0; i < theBoard['n']; i++) {
-          if( this.hasRowConflictAt(i) > 1 ) {//we expect this to return whether the number of pieces in the row is greater than 1
+        for (var i = 0; i < theBoard['n']; i++) { //theBoard['n'] is a number.
+          if(this.hasRowConflictAt(i) > 1) {//we expect this to return whether the number of pieces in the row is greater than 1
             countRow++;
           }
         }
-      
 
       if (countRow > 0) {
         bool = true;
@@ -138,12 +140,36 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var theBoard = this['attributes'];
+      var sum = 0;
+      for (var i = 0; i < theBoard['n']; i++) {
+        //console.log("column elements", theBoard[i][colIndex]);
+        sum += theBoard[i][colIndex];
+
+      };
+  
+      // pass in the index of the object as the colIndex.
+      
+      return sum;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      // debugger;
+      var bool = false;
+      var theBoard = this['attributes'];
+      var countCol = 0;
+
+      for(var i=0; i<theBoard['n']; i++) {
+        if(this.hasColConflictAt(i) > 1) {
+          countCol++;
+        }
+      }
+
+      if(countCol>0) {
+        bool=true;  
+      }
+      return bool;
     },
 
 
@@ -153,11 +179,34 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var theBoard = this['attributes'];
+      //start at [0,0] and iterate down the diagonal
+      console.log('index [2,0]', theBoard['2'][0]);
+      //the goal is for each board position, assess whether Row+1N, Col+1N is greater than 0
+      //if so, change the boolean to true 
+      var sum = 0;
+      var move = 0;
+      var diagonal = 0; //the number of diagonals that have a sum > 1
+      for(var i=0; i<theBoard['n']; i++) {
+        var x = move;
+        var y = (i+move);
+        sum += theBoard[x+''][y]; //we are using string coersion to change from number to string for key
+        while move < n
+        move++;
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      var theBoard = this['attributes'];
+      //start at [0,0] and iterate down the diagonal
+      console.log('index [2,0]', theBoard['2'][0]);
+
+
+
+
+
       return false; // fixme
     },
 
