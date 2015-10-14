@@ -8,9 +8,9 @@
 
     initialize: function (params) {
       if (_.isUndefined(params) || _.isNull(params)) {
-        console.log('Good guess! But to use the Board() constructor, you must pass it an argument in one of the following formats:');
-        console.log('\t1. An object. To create an empty board of size n:\n\t\t{n: %c<num>%c} - Where %c<num> %cis the dimension of the (empty) board you wish to instantiate\n\t\t%cEXAMPLE: var board = new Board({n:5})', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: grey;');
-        console.log('\t2. An array of arrays (a matrix). To create a populated board of size n:\n\t\t[ [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...] ] - Where each %c<val>%c is whatever value you want at that location on the board\n\t\t%cEXAMPLE: var board = new Board([[1,0,0],[0,1,0],[0,0,1]])', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: grey;');
+        //console.log('Good guess! But to use the Board() constructor, you must pass it an argument in one of the following formats:');
+        //console.log('\t1. An object. To create an empty board of size n:\n\t\t{n: %c<num>%c} - Where %c<num> %cis the dimension of the (empty) board you wish to instantiate\n\t\t%cEXAMPLE: var board = new Board({n:5})', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: grey;');
+        //console.log('\t2. An array of arrays (a matrix). To create a populated board of size n:\n\t\t[ [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...], [%c<val>%c,%c<val>%c,%c<val>%c...] ] - Where each %c<val>%c is whatever value you want at that location on the board\n\t\t%cEXAMPLE: var board = new Board([[1,0,0],[0,1,0],[0,0,1]])', 'color: blue;', 'color: black;','color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: blue;', 'color: black;', 'color: grey;');
       } else if (params.hasOwnProperty('n')) {
         this.set(makeEmptyMatrix(this.get('n')));
       } else {
@@ -179,50 +179,39 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      var bool = false;
+      var theBoard = this['attributes'];
       //start at [0,0] and iterate down the diagonal
       //the goal is for each board position, assess whether Row+1N, Col+1N is greater than 0
       //if so, change the boolean to true 
-      // var sum = 0;
-      // var sum2 = 0; 
-   
-      return bool;
-      // var bound = theBoard['n']-start; //move traverses the diagonal. For Row+1N, Col+1N, it is N) Affects both axes
+      var sumTop = 0;
+      var sumBottom = 0; 
+      var current = majorDiagonalColumnIndexAtFirstRow; // alias for the argument passed in
+      var bound = theBoard['n']-current; //move traverses the diagonal. For Row+1N, Col+1N, it is N) Affects both axes
      
-      // for(var i = 0; i < bound; i++) {
-      //   var x = i;
-      //   var y = i;
-      //   sum += theBoard[start+x+''][y]; //we are using string coersion to change from number to string for key
-      //   sum2 += theBoard[y+''][x+start];
-      // }
-      // return sum+sum2;
+
+      for(var j = 0; j < bound; j++) {
+        var x = j;
+        var y = j;
+        sumTop += theBoard[x+''][current+y]; //we are using string coersion to change from number to string for key
+        sumBottom += theBoard[current+y+''][x];
+      }
+
+      if(sumTop > 1 || sumBottom >1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      // var theBoard = this['attributes'];
-    
       var theBoard = this['attributes'];
-      console.log('the board currently being tested is: ', this);
-      //start at [0,0] and iterate down the diagonal
-      //the goal is for each board position, assess whether Row+1N, Col+1N is greater than 0
-      //if so, change the boolean to true 
-      var sum = 0;
-      var sum2 = 0; 
-     
-      for(var i = 0; i < theBoard['n']; i++) {
-        var x = i;
-        var y = i;
-        sum += theBoard[x+''][0+y]; //we are using string coersion to change from number to string for key
-        console.log('sum is: ', sum);
-        sum2 += theBoard[0+y+''][x+2];
-        console.log('sum2 is: ', sum2);
+      for(var i=0; i<theBoard['n']; i++) {
+        if(this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
       }
-      var bool = (sum > 1 || sum2 > 1); //
-      console.log(bool);
-      return bool;
-    },
-
+      return false;
+  },
 
 
     // Minor Diagonals - go from top-right to bottom-left
@@ -230,12 +219,39 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var theBoard = this['attributes'];
+      //start at [0,0] and iterate down the diagonal
+      //the goal is for each board position, assess whether Row+1N, Col-1N is greater than 0
+      //if so, change the boolean to true 
+      var sumTop = 0;
+      var sumBottom = 0; 
+      var current = minorDiagonalColumnIndexAtFirstRow; // alias for the argument passed in
+      var bound = current; //move traverses the diagonal. For Row+1N, Col+1N, it is N) Affects both axes
+      var shift = theBoard['n']-1-current;
+
+      for(var j = 0; j <= bound; j++) {
+        var x = j;
+        var y = -j;
+        sumTop += theBoard[x+''][current+y]; //we are using string coersion to change from number to string for key
+        sumBottom += theBoard[shift+x+''][current+y+shift]; //flip the top array to to the bottom by adding boardlength-1-current
+      }
+
+      if(sumTop > 1 || sumBottom > 1) {
+        return true;
+      }
+      return false;
+
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var theBoard = this['attributes'];
+      for(var i = 0; i<theBoard['n']; i++) {
+        if(this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
