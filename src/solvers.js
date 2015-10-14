@@ -24,45 +24,55 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var rookieBoard = new Board({'n':5});
-  console.log('rookieBoard is : ',rookieBoard);
-  console.log('rookieBoard.rows() is : ',rookieBoard.rows());
-  // console.log('rows method: ', rookieBoard.rows());
-  //run the hasAnyRooksConflicts with .get, so as to generate two different results.  
 
-  // rookieBoard.row(x) = returns xrowarray
+  var myBoard = new Board({n:n});
+  var myBoardArray = myBoard.rows();
+
+  console.log('myBoard is : ', myBoard);
+  console.log('myBoard.rows() is : ', myBoard.rows());
+  console.log('myBoard.rows[0] is', myBoardArray[0]);
+  // console.log('rows method: ', myBoard.rows());
 
   //if we did have an anonfunc, we could take in optional parameters and DO something with them, which we could then pass up to / return up to the countNRooksSolutions.  It could also be the thing delegated to increment the solution count
 
   //we want to increment the solution count only for the !conflicts cases!
-      // to do that we HAVE to 'walk' through the rook implementation.   
-  var recurse = function(row) {
-    for(var i=0; i<this.rows.length; i++) {
-      if(this.row[i] > 0) {
-        this.togglePiece(this.row[i], i)
-        
-      }
-
-      this.rows[i]
-    }
-
-  }
+      // to do that we HAVE to 'walk' through the rook implementation.  
   var solutionCount = 0;
-  if(!rookieBoard.hasAnyRooksConflicts()) {
+
+  var recursiveSubRoutine = function(row) {
+    for(var i = 0; i < myBoardArray.length; i++) {
+      if(myBoardArray[i] > 0) {
+        for (var i = 0; i < myBoardArray[i].length; i++) {
+          myBoard.togglePiece(i, j);
+        }
+      }
+    }
+  
+    var add = function(a,b){
+        return a+b;
+      };
+
+    var goalNumberOfPiecesIsReached = (totalPiecesOnBoard === n); // When true, this boolean indicates it's time to stop - you've found one solution!
+
+    var arrayOfPieces = _.flatten(myBoard.rows());
+    var totalPiecesOnBoard = _.reduce(arrayOfPieces, add);
+
+    if ( !myBoard.hasAnyRooksConflicts()  && goalNumberOfPiecesIsReached ) { //if there is NO conflict and the goal number of pieces is reached, then PAUSE & increase the solution count.
+      solutionCount++;
+      var newSolution = myBoard
+      return;
+
+    } else if (!myBoard.hasAnyRooksConflicts()) {
+      //increment the row
+      //execute the recursiveSubRoutine function on myBoard.  
     
-    console.log('rookieBoard.hasAnyRooksConflicts() is resolving to true.');
-    solutionCount++;
-  };
-
-
-
-
-  //console.log('GET IS:', rookieBoard.get);
+    } else if (!!myBoard.hasAnyRooksConflicts()) { 
+    } else return;
+  }();
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
-
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
