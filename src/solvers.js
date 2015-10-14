@@ -24,7 +24,40 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var rookieBoard = new Board({'n':5});
+  console.log('rookieBoard is : ',rookieBoard);
+  console.log('rookieBoard.rows() is : ',rookieBoard.rows());
+  // console.log('rows method: ', rookieBoard.rows());
+  //run the hasAnyRooksConflicts with .get, so as to generate two different results.  
+
+  // rookieBoard.row(x) = returns xrowarray
+
+  //if we did have an anonfunc, we could take in optional parameters and DO something with them, which we could then pass up to / return up to the countNRooksSolutions.  It could also be the thing delegated to increment the solution count
+
+  //we want to increment the solution count only for the !conflicts cases!
+      // to do that we HAVE to 'walk' through the rook implementation.   
+  var recurse = function(row) {
+    for(var i=0; i<this.rows.length; i++) {
+      if(this.row[i] > 0) {
+        this.togglePiece(this.row[i], i)
+        
+      }
+
+      this.rows[i]
+    }
+
+  }
+  var solutionCount = 0;
+  if(!rookieBoard.hasAnyRooksConflicts()) {
+    
+    console.log('rookieBoard.hasAnyRooksConflicts() is resolving to true.');
+    solutionCount++;
+  };
+
+
+
+
+  //console.log('GET IS:', rookieBoard.get);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
